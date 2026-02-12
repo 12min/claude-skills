@@ -42,6 +42,39 @@ This directory contains custom slash commands for 12min project workflows.
 
 ---
 
+### `/upload-book-covers`
+
+**Purpose**: Upload book cover images to production via Kubernetes pods.
+
+**Documentation**: `.claude/skills/upload-book-covers/SKILL.md`
+
+**What it does**:
+- Copies cover images from local machine to production pod
+- Validates books exist in database
+- Uploads images to S3 via Paperclip
+- Updates database with metadata
+- Generates CDN and Thumbor URLs
+- Enqueues Blurhash job automatically
+
+**Quick Usage**:
+```bash
+/upload-book-covers
+```
+
+**Process**:
+1. Prepare images named with book IDs (e.g., `16545.jpg`, `18590.jpg`)
+2. Copy images to production pod via `kubectl cp`
+3. Run dry-run to validate
+4. Execute real upload
+5. Verify in database and CDN
+
+**Performance**:
+- 1 book: ~2-3 seconds
+- 320 books: ~13-15 minutes
+- Progress shown in real-time
+
+---
+
 ### `/create-traefik-worktree`
 
 **Purpose**: Automatically create a new Git worktree with full Traefik multi-instance configuration.
