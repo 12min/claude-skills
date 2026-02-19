@@ -129,13 +129,13 @@ Substituir `EMAIL_PLACEHOLDER` pelo email do usuário.
 
 A Amplitude GDPR API aceita `user_ids` (que podem ser tanto o user_id numérico quanto o email, já que o Rails envia eventos com `user_id = email`). A deleção não é imediata — a Amplitude processa em até 30 dias, mas confirma o recebimento do pedido.
 
-**Variáveis:** `AMPLITUDE_SECRET_KEY` (no Secret `12min-credentials`) + API key hardcoded `fa4b0a4e06cd1e585aa882324575e119`.
+**Variáveis:** `AMPLITUDE_API_KEY` + `AMPLITUDE_SECRET_KEY` (ambas no Secret `12min-credentials`).
 
 ```bash
 kubectl exec $POD -- sh -c '
 ruby -e "
 require \"net/http\"; require \"uri\"; require \"json\"; require \"base64\"
-api_key = \"fa4b0a4e06cd1e585aa882324575e119\"
+api_key = ENV[\"AMPLITUDE_API_KEY\"]
 secret_key = ENV[\"AMPLITUDE_SECRET_KEY\"]
 credentials = Base64.strict_encode64(\"#{api_key}:#{secret_key}\")
 
@@ -221,9 +221,9 @@ Substituir `USER_ID_PLACEHOLDER` pelo `user_id` da Fase 1.
 
 O Adjust armazena dispositivos do usuário na tabela `adjust_headers` do Billing DB (campos `adid`, `gps_adid`, `idfa`). Esta fase deve rodar **antes** da Fase 3, pois a Fase 3 deleta esses registros.
 
-Credenciais hardcoded em `billing/src/environment.ts`:
-- `ADJUST_APP_TOKEN`: `8q9lgl4fa4u8`
-- `ADJUST_S2S_TOKEN`: `4a513eea6b7635c149eb055c6b77f6f5`
+Credenciais disponíveis como variáveis de ambiente no Secret `12min-credentials` do cluster de produção:
+- `ADJUST_APP_TOKEN`
+- `ADJUST_S2S_TOKEN`
 
 Execute via Bash (diretório: `/Users/renatofilho/Projects/billing`):
 
@@ -237,8 +237,8 @@ const dbUrl = process.env.DATABASE_URL || process.env.BILLING_DATABASE_URL;
 const sequelize = new Sequelize(dbUrl, { logging: false, dialect: 'postgres' });
 
 const userId = USER_ID_PLACEHOLDER;
-const APP_TOKEN = '8q9lgl4fa4u8';
-const S2S_TOKEN = '4a513eea6b7635c149eb055c6b77f6f5';
+const APP_TOKEN = process.env.ADJUST_APP_TOKEN;
+const S2S_TOKEN = process.env.ADJUST_S2S_TOKEN;
 
 async function forgetDevice(adid) {
   return new Promise((resolve) => {
