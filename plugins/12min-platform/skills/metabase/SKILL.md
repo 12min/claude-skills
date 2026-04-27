@@ -1,3 +1,8 @@
+---
+name: metabase
+description: Create Metabase questions and dashboards programmatically for the 12min `data.12min.com` instance via direct MySQL access. Use when the user asks to create/edit Metabase cards, dashboards, or query the 12min analytics database.
+---
+
 # Metabase — Create Questions & Dashboards
 
 Create Metabase questions (cards) and dashboards programmatically via direct MySQL access to the Metabase internal database.

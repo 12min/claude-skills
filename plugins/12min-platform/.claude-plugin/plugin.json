@@ -1,0 +1,19 @@
+{
+  "name": "12min-platform",
+  "version": "0.1.0",
+  "description": "Skills and commands for engineers working on the 12min platform — Rails backend, Kubernetes deploys, Metabase analytics, and book content workflows.",
+  "author": {
+    "name": "12min Engineering",
+    "email": "engineering@12min.com"
+  },
+  "homepage": "https://github.com/12min/claude-skills",
+  "repository": "https://github.com/12min/claude-skills",
+  "license": "UNLICENSED",
+  "keywords": [
+    "12min",
+    "platform",
+    "internal-tooling"
+  ],
+  "skills": "./skills/",
+  "commands": "./commands/"
+}
