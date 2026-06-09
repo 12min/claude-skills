@@ -1,0 +1,46 @@
+# Staging-only kubectl exec access for the VERIFY_DB Maestro E2E.
+#
+# Scope: api-staging-0 cluster, "default" namespace ONLY (where api-staging pods run).
+# RBAC is per-cluster, so production (api-production) is unaffected.
+# Pair with project-level IAM roles/container.clusterViewer (read-only; enables
+# get-credentials + auth, no workload access on its own).
+#
+# Apply ONLY to staging:
+#   kubectl --context gke_min-b302a_us-central1-c_api-staging-0 apply -f qa-verify-db-staging-rbac.yaml
+#
+# Add another QA person: append a subject to the RoleBinding below and re-apply.
+# (Mirror of 12min/mobile-v2 scripts/rbac/qa-verify-db-staging-rbac.yaml.)
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: qa-verify-db
+  namespace: default
+  labels:
+    app.kubernetes.io/managed-by: mobile-v2-qa
+    purpose: maestro-verify-db
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list"]
+  - apiGroups: [""]
+    resources: ["pods/exec"]
+    verbs: ["create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: qa-verify-db
+  namespace: default
+  labels:
+    app.kubernetes.io/managed-by: mobile-v2-qa
+    purpose: maestro-verify-db
+subjects:
+  # GKE maps a Google identity to a Kubernetes user by email address.
+  - kind: User
+    name: ricardo@12min.com
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: qa-verify-db
+  apiGroup: rbac.authorization.k8s.io
