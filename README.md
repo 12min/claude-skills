@@ -1,279 +1,95 @@
-# Claude Code Custom Commands
+# 12min Claude Code Marketplace
 
-This directory contains custom slash commands for 12min project workflows.
+Internal Claude Code plugins for the 12min engineering team. Skills, commands, and tooling shared across the org.
 
-## Available Commands
+## Install
 
-### `/timer`
+In any Claude Code session:
 
-**Purpose**: Countdown timer with sound alert and notifications.
+```
+/plugin marketplace add 12min/claude-skills
+/plugin install 12min-platform@12min
+```
 
-**Documentation**: `.claude/commands/timer.md`
+Update later:
 
-**What it does**:
-- Starts a countdown timer with MM:SS display format
-- Updates display every second
-- Plays sound alert when finished
-- Shows system notification
-- Supports various time formats (seconds, minutes, hours, combinations)
+```
+/plugin update 12min-platform
+```
 
-**Quick Usage**:
+## Available plugins
+
+| Plugin | Description |
+|---|---|
+| **[12min-platform](./plugins/12min-platform/)** | Skills for the 12min platform — PR merge, Metabase, APM, Loki logs, ClickUp sprint, deploy monitor, worktrees |
+
+## Repo structure
+
+```
+.
+├── .claude-plugin/
+│   └── marketplace.json
+├── plugins/
+│   └── 12min-platform/
+│       ├── .claude-plugin/plugin.json
+│       ├── README.md
+│       ├── scripts/
+│       │   └── clickup_sprint.py       ← ClickUp sprint script (copy to ~/.claude/scripts/ on first use)
+│       ├── skills/
+│       │   ├── apm/                    ← Elastic APM observability queries
+│       │   ├── create-traefik-worktree/ ← worktree + Traefik isolation
+│       │   ├── deploy-monitor/         ← post-deploy anomaly monitoring
+│       │   ├── logcli-google-callbacks/ ← Google Play callback log analyzer
+│       │   ├── logcli-ingress/         ← nginx/ingress log search via Loki
+│       │   ├── merge-pr/               ← smart PR merge + CI/CD monitoring
+│       │   ├── metabase/               ← Metabase analytics queries
+│       │   ├── qa-plan/                ← QA plan generation
+│       │   ├── roadmap-quarter/        ← quarterly roadmap slide
+│       │   ├── sprint/                 ← ClickUp current sprint viewer
+│       │   ├── sync-development/       ← recreate development branch from master
+│       │   ├── upload-book-covers/     ← book cover upload workflow
+│       │   └── worktree/               ← git worktree Docker Compose guide
+│       └── commands/
+└── README.md                           ← you are here
+```
+
+## Skills reference
+
+| Skill | Trigger phrases |
+|---|---|
+| `apm` | APM data, endpoint latency, slowest routes, N+1 detection |
+| `deploy-monitor` | monitor deploy, me avisa se der erro, watch for errors after deploy |
+| `logcli-ingress` | nginx logs, 5xx errors, ingress logs, Loki ingress |
+| `logcli-google-callbacks` | Google Play callbacks, IAP logs, subscription callbacks |
+| `merge-pr` | merge PR, ship PR, close feature branch |
+| `metabase` | Metabase, analytics query |
+| `sprint` | sprint atual, tasks da sprint, sprint do Ricardo |
+| `sync-development` | sync development, reset development branch |
+| `worktree` | create worktree, parallel testing, worktree guide |
+| `create-traefik-worktree` | create traefik worktree, isolated dev environment |
+
+## First-time setup for sprint skill
+
+The `sprint` skill requires `clickup_sprint.py` in your `~/.claude/scripts/` directory:
+
 ```bash
-/timer 5m           # 5 minutes
-/timer 30s          # 30 seconds
-/timer 1h30m        # 1 hour 30 minutes
-/timer 45           # 45 seconds (no unit defaults to seconds)
+cp plugins/12min-platform/scripts/clickup_sprint.py ~/.claude/scripts/
 ```
 
-**Display Format**:
-```
-⏱️  Timer iniciado: 5:00
-
-5:00
-4:59
-4:58
-...
-0:01
-
-╔════════════════════════════════╗
-║     ⏰ TEMPO FINALIZADO! ⏰      ║
-╚════════════════════════════════╝
-```
-
----
-
-### `/upload-book-covers`
-
-**Purpose**: Upload book cover images to production via Kubernetes pods.
-
-**Documentation**: `.claude/skills/upload-book-covers/SKILL.md`
-
-**What it does**:
-- Copies cover images from local machine to production pod
-- Validates books exist in database
-- Uploads images to S3 via Paperclip
-- Updates database with metadata
-- Generates CDN and Thumbor URLs
-- Enqueues Blurhash job automatically
-
-**Quick Usage**:
+Also set `CLICKUP_API_KEY` in your `~/.zprofile`:
 ```bash
-/upload-book-covers
+export CLICKUP_API_KEY="your_api_key_here"
 ```
 
-**Process**:
-1. Prepare images named with book IDs (e.g., `16545.jpg`, `18590.jpg`)
-2. Copy images to production pod via `kubectl cp`
-3. Run dry-run to validate
-4. Execute real upload
-5. Verify in database and CDN
+## Loose files (not yet packaged)
 
-**Performance**:
-- 1 book: ~2-3 seconds
-- 320 books: ~13-15 minutes
-- Progress shown in real-time
-
----
-
-### `/create-traefik-worktree`
-
-**Purpose**: Automatically create a new Git worktree with full Traefik multi-instance configuration.
-
-**Documentation**: `.claude/commands/create-traefik-worktree.md`
-
-**What it does**:
-- Creates a new Git worktree
-- Copies updated docker-compose.yml (with Traefik labels and networks)
-- Generates docker-compose.override.yml with unique ports
-- Configures environment variables
-- Optionally starts containers
-
-**Quick Usage**:
-```bash
-/create-traefik-worktree web-feature-auth
-/create-traefik-worktree web-bugfix-123 --start
-```
-
-**Under the Hood**:
-This command invokes the bash script at `/web/bin/create-traefik-worktree.sh` which automates:
-1. `git worktree add`
-2. Docker compose file copying
-3. Override generation with unique port allocation
-4. Container startup (optional)
-
----
-
-## Setup for New Developers
-
-1. **First time setup** (one-time):
-   ```bash
-   # Create Traefik network
-   docker network create proxy-net
-
-   # Start Traefik
-   cd /Users/renatofilho/Projects/traefik
-   docker-compose up -d
-   ```
-
-2. **Create your worktree**:
-   ```bash
-   /create-traefik-worktree web-my-feature
-   ```
-
-3. **Start developing**:
-   ```bash
-   cd /Users/renatofilho/Projects/web-my-feature
-   docker-compose up -d
-
-   # Access at http://my-feature.localhost
-   ```
-
----
-
-## Related Documentation
-
-- **Quick Start Guide**: `/web/docs/TRAEFIK_WORKTREE_QUICKSTART.md`
-- **Full Test Results**: `/web/docs/TRAEFIK_MULTI_WORKTREE_TEST_RESULTS.md`
-- **Implementation Details**: `/web/docs/TRAEFIK_MULTI_WORKTREE_TEST_RESULTS.md`
-- **Bash Script**: `/web/bin/create-traefik-worktree.sh`
-- **Port Generation**: `/web/bin/generate-override.sh`
-
----
-
-## Technical Overview
-
-### Architecture
-
-```
-┌─ Traefik (Port 80) ─┐
-│                    │
-├─ master.localhost ──→ web-app:3000
-├─ feature.localhost ─→ web-feature-app:3000
-├─ test.localhost ────→ web-test-app:3000
-└─ ...
-```
-
-### Port Allocation Strategy
-
-Each worktree gets unique ports using hash-based offset:
-```bash
-PORT_OFFSET = $(echo -n "worktree-name" | cksum | awk '{print ($1 % 100)}')
-```
-
-**Benefits**:
-- ✅ No port conflicts
-- ✅ Deterministic (same result every time)
-- ✅ Automatic (no manual management)
-- ✅ Collision-free (modulo 100)
-
-### Service Isolation
-
-Each worktree has:
-- ✅ Separate PostgreSQL container + volume
-- ✅ Separate Redis container
-- ✅ Separate Elasticsearch cluster
-- ✅ Dedicated Traefik router
-- ✅ Isolated internal network
-
----
-
-## Troubleshooting
-
-### Q: How do I create a new worktree?
-A: Use `/create-traefik-worktree <name>` or `./bin/create-traefik-worktree.sh <name>`
-
-### Q: What ports are used?
-A: See port reference in `/web/docs/TRAEFIK_WORKTREE_QUICKSTART.md`
-
-### Q: How do I access my app?
-A: http://{subdomain}.localhost (subdomain = worktree name without "web-" prefix)
-
-### Q: I'm getting 502 Bad Gateway
-A: Rails is still booting. Wait 30-60 seconds and check: `docker logs -f web-{name}-app`
-
-### Q: Port already allocated error
-A: Regenerate override: `cd /web-{name} && ./bin/generate-override.sh && docker-compose down && docker-compose up -d`
-
-### Q: Can't resolve hostname
-A: Add to /etc/hosts: `127.0.0.1 {subdomain}.localhost`
-
----
-
-## Advanced Usage
-
-### Create multiple worktrees
-```bash
-for feature in auth payment dashboard; do
-  /create-traefik-worktree web-feature-$feature &
-done
-wait
-```
-
-### Monitor all containers
-```bash
-watch 'docker ps --format "{{.Names}} | {{.State}}" | grep "^web"'
-```
-
-### Access any database
-```bash
-# Example: Connect to web-feature-auth database
-psql -h localhost -p 5516 -U 12min -d postgres
-
-# Find port: docker ps | grep "web-feature-auth-db"
-```
-
-### Clean up worktree
-```bash
-# Remove git worktree
-git worktree remove web-old-branch
-
-# Remove data volume
-rm -rf pg-data-web-old-branch/
-
-# Remove containers
-docker ps -a | grep "web-old-branch" | awk '{print $1}' | xargs docker rm
-```
-
----
-
-## Performance Notes
-
-- **Container Startup**: 30-60 seconds per worktree (Rails preloading)
-- **Memory Usage**: ~800MB per worktree (Rails + PostgreSQL + Redis + Elasticsearch)
-- **Disk Usage**: ~2GB per worktree
-- **Network Overhead**: Minimal (internal Docker network)
-
-### Recommendations
-
-- **Recommended Max Concurrent Worktrees**: 3-4 on developer machine
-- **Production Load**: Traefik can handle 100+ routers
-- **Database**: PostgreSQL containers don't share connection pool (isolated)
-
----
-
-## Files Modified
-
-| File | Purpose |
-|------|---------|
-| `/web/docker-compose.yml` | Traefik labels + networks |
-| `/web/bin/create-traefik-worktree.sh` | Worktree creation automation |
-| `/web/bin/generate-override.sh` | Port offset calculation |
-| `/traefik/docker-compose.yml` | Reverse proxy service |
-| `/web/docs/TRAEFIK_WORKTREE_QUICKSTART.md` | User guide |
-| `/web/docs/TRAEFIK_MULTI_WORKTREE_TEST_RESULTS.md` | Test results & architecture |
-
----
+- `timer.md` — countdown timer command
+- `news.md` — personal news fetcher
 
 ## Contributing
 
-To improve these commands:
+PR-based. Each plugin lives under `plugins/<name>/` with its own `plugin.json` + `README.md`. Skills follow the standard `SKILL.md` format with YAML frontmatter (`name`, `description`).
 
-1. Update `/web/bin/create-traefik-worktree.sh` for script changes
-2. Update `/web/docs/TRAEFIK_WORKTREE_QUICKSTART.md` for user-facing docs
-3. Update this file for meta-documentation
+## Access
 
----
-
-**Last Updated**: 2025-12-18
-**Status**: ✅ Production Ready
-**Tested With**: 2 simultaneous worktrees, 0 port conflicts
+Repo is private — only members of the `12min` GitHub org can clone. Adding/removing engineers from the org automatically grants/revokes plugin access.

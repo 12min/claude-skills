@@ -1,3 +1,8 @@
+---
+name: merge-pr
+description: Smart PR merge for 12min repos — squash merge, auto-cleanup branch, sync development, monitor CI/CD deploy. Use when the user asks to merge a PR, ship a PR, or close out a feature branch.
+---
+
 # Merge PR Command
 
 Smartly merge PRs with automatic branch cleanup, development synchronization, and CI/CD monitoring.

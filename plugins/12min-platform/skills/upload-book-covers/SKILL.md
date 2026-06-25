@@ -1,3 +1,8 @@
+---
+name: upload-book-covers
+description: Bulk upload book covers to 12min production for the `new_cover_experiment` field on the `books` table via Kubernetes pods (S3 via Paperclip + Thumbor + Blurhash queue). Use when the user asks to upload covers, replace book images, or run the cover experiment.
+---
+
 # Upload Book Covers to Production
 
 Skill para fazer upload em massa de capas de livros (experimento `new_cover_experiment`) para produção via Kubernetes pods.

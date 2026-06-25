@@ -1,0 +1,33 @@
+{
+  "name": "12min",
+  "owner": {
+    "name": "12min Engineering",
+    "email": "engineering@12min.com",
+    "url": "https://github.com/12min"
+  },
+  "metadata": {
+    "description": "Internal Claude Code plugins for the 12min platform. Skills, commands, and tooling shared across the engineering team.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "12min-platform",
+      "source": "./plugins/12min-platform",
+      "description": "Skills and commands for working on the 12min platform: book covers upload, PR merge workflow, Metabase analytics integration.",
+      "version": "0.1.0",
+      "author": {
+        "name": "12min Engineering"
+      },
+      "category": "internal-tooling",
+      "keywords": [
+        "12min",
+        "platform",
+        "rails",
+        "kubernetes",
+        "metabase",
+        "books",
+        "github"
+      ]
+    }
+  ]
+}
