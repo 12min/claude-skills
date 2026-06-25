@@ -21,7 +21,7 @@ Update later:
 
 | Plugin | Description |
 |---|---|
-| **[12min-platform](./plugins/12min-platform/)** | Skills for the 12min platform — PR merge, Metabase, APM, Loki logs, ClickUp sprint, deploy monitor, worktrees |
+| **[12min-platform](./plugins/12min-platform/)** | Skills for the 12min platform — PR merge, Metabase, APM, Loki logs, ClickUp sprint, deploy monitor, worktree |
 
 ## Repo structure
 
@@ -37,7 +37,6 @@ Update later:
 │       │   └── clickup_sprint.py       ← ClickUp sprint script (copy to ~/.claude/scripts/ on first use)
 │       ├── skills/
 │       │   ├── apm/                    ← Elastic APM observability queries
-│       │   ├── create-traefik-worktree/ ← worktree + Traefik isolation
 │       │   ├── deploy-monitor/         ← post-deploy anomaly monitoring
 │       │   ├── logcli-google-callbacks/ ← Google Play callback log analyzer
 │       │   ├── logcli-ingress/         ← nginx/ingress log search via Loki
@@ -65,8 +64,7 @@ Update later:
 | `metabase` | Metabase, analytics query |
 | `sprint` | sprint atual, tasks da sprint, sprint do Ricardo |
 | `sync-development` | sync development, reset development branch |
-| `worktree` | create worktree, parallel testing, worktree guide |
-| `create-traefik-worktree` | create traefik worktree, isolated dev environment |
+| `worktree` | worktree guide, parallel testing, Docker Compose isolation |
 
 ## First-time setup for sprint skill
 
@@ -80,11 +78,6 @@ Also set `CLICKUP_API_KEY` in your `~/.zprofile`:
 ```bash
 export CLICKUP_API_KEY="your_api_key_here"
 ```
-
-## Loose files (not yet packaged)
-
-- `timer.md` — countdown timer command
-- `news.md` — personal news fetcher
 
 ## Contributing
 
