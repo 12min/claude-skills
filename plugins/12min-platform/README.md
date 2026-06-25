@@ -35,6 +35,7 @@ To update later:
 | `sync-development` | sync development, reset development branch | Recreates `development` branch from `master` |
 | `upload-book-covers` | upload book covers | Bulk-uploads book covers to prod via K8s + S3 |
 | `worktree` | worktree guide, parallel testing | Git worktree Docker Compose isolation guide for the web repo |
+| `youtube-content` | YouTube summary, transcript, video notes | Fetches/transcribes YouTube content and formats it as summaries, chapters, threads, blogs, or Obsidian notes |
 
 ## First-time setup: sprint skill
 
@@ -62,6 +63,7 @@ Get your key at: **ClickUp → Settings → Apps → API Token**.
 | `logcli` in PATH | `logcli-ingress`, `logcli-google-callbacks` |
 | `gcloud` + IAP access | `apm`, `deploy-monitor` |
 | `CLICKUP_API_KEY` env var | `sprint` |
+| `uv`, `yt-dlp`, `ffmpeg` optional | `youtube-content` transcript/audio fallback |
 
 ## Contributing
 
