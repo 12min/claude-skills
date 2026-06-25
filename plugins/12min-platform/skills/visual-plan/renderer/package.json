@@ -1,0 +1,15 @@
+{
+  "name": "visual-plan-renderer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": { "visual-plan": "render.mjs" },
+  "dependencies": {
+    "@mdx-js/mdx": "^3",
+    "react": "^19",
+    "react-dom": "^19",
+    "remark-gfm": "^4",
+    "remark-frontmatter": "^5",
+    "remark-mdx-frontmatter": "^5"
+  }
+}

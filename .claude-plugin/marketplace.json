@@ -13,8 +13,8 @@
     {
       "name": "12min-platform",
       "source": "./plugins/12min-platform",
-      "description": "Skills for the 12min platform: APM observability, Loki log analysis, ClickUp sprint, deploy monitoring, PR merge, Metabase, worktrees.",
-      "version": "0.2.0",
+      "description": "Skills for the 12min platform: APM observability, Loki log analysis, ClickUp sprint, deploy monitoring, PR merge, Metabase, worktrees, and planning.",
+      "version": "0.3.0",
       "author": {
         "name": "12min Engineering"
       },
@@ -28,7 +28,10 @@
         "apm",
         "loki",
         "clickup",
-        "sprint"
+        "sprint",
+        "planning",
+        "sdd",
+        "visual-plan"
       ]
     }
   ]

@@ -31,9 +31,11 @@ To update later:
 | `metabase` | create Metabase question, build dashboard | CRUD on `data.12min.com` Metabase via direct MySQL |
 | `qa-plan` | QA plan, test this PR | Generates a QA checklist for a PR or feature |
 | `roadmap-quarter` | roadmap Q2, quarterly roadmap slide | Generates the weekly roadmap slide |
+| `sdd` | /sdd, spec-driven development, specs first | Converts an approved visual plan into RED/GREEN/REFACTOR implementation specs |
 | `sprint` | sprint atual, tasks da sprint, sprint do Ricardo | Lists current ClickUp sprint tasks with team member filtering |
 | `sync-development` | sync development, reset development branch | Recreates `development` branch from `master` |
 | `upload-book-covers` | upload book covers | Bulk-uploads book covers to prod via K8s + S3 |
+| `visual-plan` | visual plan, plano visual, approve before code | Renders a local HTML planning artifact before risky or multi-file code changes |
 | `worktree` | worktree guide, parallel testing | Git worktree Docker Compose isolation guide for the web repo |
 | `youtube-content` | YouTube summary, transcript, video notes | Fetches/transcribes YouTube content and formats it as summaries, chapters, threads, blogs, or Obsidian notes |
 
@@ -63,6 +65,7 @@ Get your key at: **ClickUp → Settings → Apps → API Token**.
 | `logcli` in PATH | `logcli-ingress`, `logcli-google-callbacks` |
 | `gcloud` + IAP access | `apm`, `deploy-monitor` |
 | `CLICKUP_API_KEY` env var | `sprint` |
+| `node` + `npm` optional | `visual-plan` local renderer |
 | `uv`, `yt-dlp`, `ffmpeg` optional | `youtube-content` transcript/audio fallback |
 
 ## Contributing
