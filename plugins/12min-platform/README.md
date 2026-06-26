@@ -25,6 +25,7 @@ To update later:
 |---|---|---|
 | `apm` | APM data, endpoint latency, slowest routes, N+1 | Queries Elastic APM via SSH — latency, throughput, errors, N+1 detection |
 | `deploy-monitor` | monitor deploy, me avisa se der erro | Generates a post-deploy monitoring script with Slack DM alerts |
+| `facebook-data-deletion` | Facebook deletion, Meta CSV, facebook uid, user data deletion request | Processes Meta/Facebook deletion requests with dry run, UID mapping, internal/external cleanup, and `facebook_data_deletions` audit |
 | `logcli-ingress` | nginx logs, 5xx errors, ingress logs | Searches nginx/ingress logs via Loki (5xx, 4xx, tail, custom LogQL) |
 | `logcli-google-callbacks` | Google callbacks, IAP logs | Fetches and decodes Google Play subscription callbacks from Loki |
 | `merge-pr` | merge PR, ship PR | Squash-merge PR with branch cleanup and CI/CD monitoring |
